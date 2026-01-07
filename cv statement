@@ -1,0 +1,2 @@
+Higgs Boson Search using CERN Open Data
+Reconstructed the four-lepton invariant mass spectrum from real LHC proton–proton collision data and performed a likelihood-based background-only vs signal interpretation of the H → ZZ* → 4ℓ channel using Python and ROOT-based tools.

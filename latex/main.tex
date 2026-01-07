@@ -1,0 +1,186 @@
+\documentclass[11pt, a4paper]{article}
+
+% Essential Packages
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{amsmath, amssymb} % For math symbols and equations
+\usepackage{graphicx}         % For including figures
+\usepackage{hyperref}         % For clickable links
+\usepackage{physics}          % Optional: for easier vector notation if needed
+\usepackage{float}            % For figure placement
+
+% Geometry settings for better margins
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=2.5cm,
+    right=2.5cm
+}
+
+% Title Information
+\title{\textbf{Analysis and Interpretation of the Four-Lepton Invariant Mass Spectrum Using CERN Open Data}}
+\author{Project Report}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report details the analysis of real CERN Open Data to reconstruct the four-lepton invariant mass spectrum. The study focuses on the decay channel $H \rightarrow ZZ^* \rightarrow 4\ell$, known as the "golden channel." We present the dataset description, the physics observable, the analysis workflow, and a detailed interpretation of the resulting spectrum in the context of Standard Model expectations.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% -------------------------------------------------------------------
+% Content from project-desciption.md
+% -------------------------------------------------------------------
+
+\section{Introduction}
+The discovery of the Higgs boson in 2012 by the ATLAS and CMS collaborations marked a major milestone in particle physics. One of the cleanest and most important discovery channels is the decay:
+
+\begin{equation}
+H \rightarrow ZZ^* \rightarrow 4\ell \;(\ell = e, \mu)
+\end{equation}
+
+commonly referred to as the \textit{golden channel}. Despite its very small branching ratio, this channel provides excellent mass resolution and low background contamination, making it ideal for precision studies.
+
+In this project, real CERN Open Data are analyzed to reconstruct the four-lepton invariant mass spectrum. The goal is \textbf{not} to rediscover the Higgs boson, but to perform a realistic small-statistics analysis, understand background-dominated data, and demonstrate proper experimental reasoning consistent with LHC analyses.
+
+\section{Dataset Description}
+The data used in this project come from publicly released CERN Open Data in ROOT format \begin{verbatim}
+ODEO_FEB2025_v0_exactly4lep_data15_periodD.exactly4lep.root
+\end{verbatim}.
+The file contains reconstructed lepton-level information for proton–proton collision events recorded at the LHC.
+
+Link for the root file: https://opendata.cern.ch/record/93924/
+
+Each event consists of:
+\begin{itemize}
+    \item Four reconstructed leptons (electrons or muons)
+    \item Lepton four-momenta $(E, p_x, p_y, p_z)$
+    \item Event-level information suitable for invariant mass reconstruction
+\end{itemize}
+
+A total of \textbf{3424 four-lepton events} pass the basic selection criteria and are used in this analysis.
+
+\section{Physics Observable: Four-Lepton Invariant Mass}
+The central observable is the four-lepton invariant mass, defined as:
+
+\begin{equation}
+m_{4\ell} = \sqrt{\left(\sum_{i=1}^{4} E_i\right)^2 - \left|\sum_{i=1}^{4} \vec{p}_i\right|^2}
+\end{equation}
+
+This quantity is Lorentz invariant and directly sensitive to resonant particle decays, such as:
+\begin{itemize}
+    \item $Z \rightarrow \ell\ell$
+    \item $H \rightarrow ZZ^* \rightarrow 4\ell$
+\end{itemize}
+
+\section{Data Processing and Analysis Workflow}
+The ROOT file is analyzed using a Jupyter Notebook (\texttt{Analysis-1.ipynb}) with Python-based HEP tools. The main steps are:
+
+\begin{enumerate}
+    \item Reading the ROOT file using appropriate Python libraries
+    \item Extracting lepton four-momenta for each event
+    \item Constructing four-vectors and summing them event-by-event
+    \item Computing the invariant mass $m_{4\ell}$
+    \item Filling a histogram over the range 70–200 GeV
+\end{enumerate}
+
+This workflow closely mirrors the structure of real LHC analyses, at a simplified and educational scale.
+
+\section{Expected Physics Contributions}
+Two main Standard Model processes contribute to the four-lepton invariant mass spectrum:
+
+\subsection{Background: Continuum ZZ Production}
+\begin{equation}
+pp \rightarrow ZZ^{(*)} \rightarrow 4\ell
+\end{equation}
+This process produces a \textbf{smooth, falling invariant mass distribution} and dominates the event yield across the full mass range.
+
+\subsection{Signal: Higgs Boson}
+\begin{equation}
+pp \rightarrow H \rightarrow ZZ^* \rightarrow 4\ell
+\end{equation}
+The Higgs signal would appear as a \textbf{narrow resonance} around:
+\begin{equation}
+m_H \approx 125 \, \text{GeV}
+\end{equation}
+However, due to the extremely small branching ratio and limited dataset size, only a very small number of Higgs events are expected.
+
+% -------------------------------------------------------------------
+% Content from interpretation.md (Integrated as Section 6)
+% -------------------------------------------------------------------
+
+\section{Interpretation of the Invariant Mass Spectrum}
+This section details the interpretation of the reconstructed spectrum shown in the analysis results. The figure (Figure \ref{fig:spectrum}) displays the four-lepton invariant mass $m_{4\ell}$ obtained from the dataset.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{higgs.png} 
+    \caption{The reconstructed four-lepton invariant mass distribution.}
+    \label{fig:spectrum}
+\end{figure}
+
+The invariant mass is calculated from the combined four-momenta of the leptons:
+\begin{equation}
+m_{4\ell} = \sqrt{\left( \sum_{i=1}^{4} E_i \right)^2 - \left| \sum_{i=1}^{4} \vec{p}_i \right|^2}
+\end{equation}
+This observable plays a crucial role in Higgs boson studies in the golden channel $H \rightarrow ZZ^* \rightarrow 4\ell$, as it provides good mass resolution and a clean experimental signature.
+
+\subsection{What the Distribution Shows}
+The invariant mass spectrum exhibits a \textbf{smoothly falling distribution} across the full mass range. This behavior is characteristic of the dominant \textbf{Standard Model background}, primarily arising from the process:
+\begin{equation}
+pp \rightarrow ZZ^{(*)} \rightarrow 4\ell
+\end{equation}
+
+Two vertical reference lines are typically shown on such plots:
+\begin{itemize}
+    \item \textbf{Z boson mass ($\approx$ 91 GeV):} This line indicates the on-shell Z boson mass. In a four-lepton final state, a sharp peak is not expected at this value, since the observable corresponds to the combined mass of four leptons rather than a dilepton pair. Nevertheless, it provides a useful physical scale and marks the region where one Z boson becomes on-shell in $ZZ^{(*)}$ production.
+    \item \textbf{Higgs boson mass ($\approx$ 125 GeV):} This line indicates the expected position of a Higgs resonance decaying via $H \rightarrow ZZ^* \rightarrow 4\ell$.
+\end{itemize}
+
+\subsection{Absence of Resonant Peaks}
+No clear excess is observed near either of the reference masses. In particular:
+\begin{itemize}
+    \item No visible Higgs peak is present near 125 GeV.
+    \item The region around 91 GeV follows the expected smooth background behavior for a four-lepton invariant mass distribution.
+\end{itemize}
+
+The absence of a visible Higgs peak is expected because the decay $H \rightarrow ZZ^* \rightarrow 4\ell$ has a very small branching ratio, and the available CERN Open Data sample is limited. Any Higgs contribution is therefore much smaller than the dominant $ZZ \rightarrow 4\ell$ background and cannot be identified by visual inspection alone.
+
+\subsection{Physical Interpretation}
+The measured four-lepton invariant mass spectrum is consistent with:
+\begin{itemize}
+    \item Standard Model expectations
+    \item A background-dominated sample of $ZZ^{(*)} \rightarrow 4\ell$ events
+\end{itemize}
+The lack of a statistically significant Higgs signal is a consequence of the limited dataset size rather than a deficiency in the analysis.
+
+% -------------------------------------------------------------------
+% Back to project-desciption.md for Conclusion
+% -------------------------------------------------------------------
+
+\section{Conclusion}
+A complete four-lepton invariant mass analysis was performed using real CERN Open Data. The observed spectrum is dominated by Standard Model background processes, and no statistically significant Higgs signal is observed. This outcome is expected and reflects realistic experimental conditions.
+
+This project demonstrates:
+\begin{itemize}
+    \item Correct reconstruction of a key LHC observable
+    \item Sound physical interpretation
+    \item Proper use of statistical reasoning
+\end{itemize}
+
+\section{Future Improvements}
+Possible extensions of this work include:
+\begin{itemize}
+    \item Signal and background fitting
+    \item Optimization of event selection criteria
+    \item Combination with simulated datasets
+    \item Extension to other decay channels
+\end{itemize}
+These steps would improve sensitivity and more closely resemble full-scale LHC analyses.
+
+\end{document}
